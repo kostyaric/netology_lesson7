@@ -1,12 +1,9 @@
 <?php
 
-	session_start();
+	include_once "functions.php";
 
-	if (!isset($_SESSION['name'])) {
-		http_response_code(403);
-		exit;
-	}
-
+	checkUser(true);
+	
 	if (!empty($_FILES) && isset($_FILES['filetest']) && $_FILES['filetest']['error'] === 0) {
 
 		$arrFiles = scandir('tests');
@@ -45,6 +42,7 @@
 		<input type="submit" name="load" value="Загрузить">
 	</form>
 	<a href="list.php">Список тестов</a>
+	<?php echo logoutText(); ?>
 </body>
 </html>
 

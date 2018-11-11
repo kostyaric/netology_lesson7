@@ -1,47 +1,17 @@
 <?php
-	
-	session_start();
+	include_once "functions.php";
 
-	if (!isset($_SESSION['name'])) {
-		http_response_code(403);
-		exit;
-	}
+	$its_admin = checkUser();
 
 	if (!empty($_GET)) {
 
-		if (isset($_GET['Del'])) {
+		if (isset($_GET['Del']) && $its_admin) {
 			
 			$file_del = __DIR__ . '/tests/' . $_GET['Del'] . '.json';
 			unlink($file_del);
 
 		}
 
-	}
-
-	$its_admin = false;
-	$users_file = __DIR__ . '/users.json';
-
-	if (file_exists($users_file)) {
-		
-		$users_string = file_get_contents($users_file);
-		$users_data = json_decode($users_string, true);
-
-		if (isset($_SESSION['password'])) {
-			
-			foreach ($users_data as $user) {
-				
-				$login = $user['name'];
-				$password = $user['password'];
-
-				if (($login === $_SESSION['name']) && ($password === $_SESSION['password'])) {
-					
-					$its_admin = true;
-
-				}
-
-			}
-
-		}
 	}
 
 	$arrFiles = scandir('tests');
@@ -80,13 +50,14 @@
 </head>
 <body>
 
-<h1>Список тестов</h1>
-<?php
-	echo $list_string;
-	if ($its_admin) {
-		echo '<a href="admin.php">Добавить тест</a>';
-	}
-?>
+	<h1>Список тестов</h1>
+	<?php
+		echo $list_string;
+		if ($its_admin) {
+			echo '<a href="admin.php">Добавить тест</a>';
+		}
+		echo logoutText();
+	?>
 
 </body>
 </html>

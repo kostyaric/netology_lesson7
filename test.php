@@ -1,11 +1,7 @@
 <?php
 
-	session_start();
-
-	if (!isset($_SESSION['name'])) {
-		http_response_code(403);
-		exit;
-	}
+	include_once "functions.php";
+	checkUser();
 
 	$result_string = '';
 
